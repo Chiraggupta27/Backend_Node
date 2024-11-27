@@ -1,3 +1,5 @@
+import generateToken from "../utils/jwt.js";
+
 const login = (req, res) => {
     const {userName , password} = req.body;
 
@@ -7,6 +9,9 @@ const login = (req, res) => {
             message:"Please enter username and password"
         })
     }
+
+    const token = generateToken.generateToken({userName,password});
+
     return res.status(200).json({
         success: true,
         message: "Logged in successfully",
@@ -14,11 +19,13 @@ const login = (req, res) => {
             userName: userName,
             password: password,
         },
+        token:token
     });
 };
 
 const signUp = (req,res) => {
     const {userName , password} = req.body;
+    const generateToken = generateToken({userName,password});
 
     if(!userName || !password){
         return res.status(400).json({
@@ -33,6 +40,7 @@ const signUp = (req,res) => {
             userName: userName,
             password: password,
         },
+        token:generateToken
     })
 }
 
